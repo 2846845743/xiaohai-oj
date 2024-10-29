@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Captcha Example</title>
+</head>
+<body>
+<!-- 显示验证码图片 -->
+<img id="captcha" src="http://localhost:8081/captcha" alt="Captcha Image">
+<button onclick="refreshCaptcha()">Refresh Captcha</button>
+
+<script>
+    function refreshCaptcha() {
+        const captchaImage = document.getElementById('captcha');
+        captchaImage.src = 'http://localhost:8081/captcha?' + new Date().getTime(); // 添加时间戳防止缓存
+    }
+</script>
+</body>
+</html>
