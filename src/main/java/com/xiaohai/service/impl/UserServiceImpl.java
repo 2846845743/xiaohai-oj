@@ -188,6 +188,7 @@ public class UserServiceImpl implements UserService {
         //设置过期时间
         stringRedisTemplate.expire(LOGIN_USER_KEY + token, LOGIN_USER_TTL, TimeUnit.MINUTES);
 
+        //todo 保存用户信息到ThreadLocal
         return Result.success(token);
     }
 }
