@@ -3,7 +3,6 @@ package com.xiaohai.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
-import cn.hutool.core.lang.UUID;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -11,6 +10,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.xiaohai.mapper.UserMapper;
 import com.xiaohai.model.dto.UserDTO;
 import com.xiaohai.model.dto.UserLoginDTO;
+import com.xiaohai.model.dto.UserRedis;
 import com.xiaohai.model.po.User;
 import com.xiaohai.service.UserService;
 import com.xiaohai.utils.MD5;
@@ -28,6 +28,9 @@ import java.security.SecureRandom;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
+
+import static com.xiaohai.utils.Constants.LOGIN_USER_KEY;
+import static com.xiaohai.utils.Constants.LOGIN_USER_TTL;
 
 @Service
 @Slf4j
@@ -145,7 +148,7 @@ public class UserServiceImpl implements UserService {
             return Result.fail("用户密码为空");
         }
         //从数据库中取出盐值和密码对
-        User dbUser = mapper.selectOne(new LambdaQueryWrapper<User>().select(User::getPassword).eq(User::getUsername,user.getUsername()));
+        User dbUser = mapper.selectOne(new LambdaQueryWrapper<User>().select(User::getPassword,User::getId,User::getUsername,User::getRole).eq(User::getUsername,user.getUsername()));
         if(dbUser==null){
             //用户不存在
             return Result.fail("该用户尚未注册!");
@@ -171,6 +174,20 @@ public class UserServiceImpl implements UserService {
         }
         //走到这里密码校验成功了,可以处理token
         //todo:生成token并且返回
-        return Result.success(null);
+
+        String token = UUID.randomUUID().toString();
+        user.setPassword(null);//屏蔽密码之后存到redis
+        UserRedis userRedis = BeanUtil.copyProperties(dbUser,UserRedis.class);
+        Map<String, Object> map = BeanUtil.beanToMap(userRedis, new HashMap<>()
+                , CopyOptions.create().setIgnoreNullValue(true)
+                        .setFieldValueEditor(
+                                (name, value) -> value.toString()
+                        ));
+        //保存用户信息到redis
+        stringRedisTemplate.opsForHash().putAll(LOGIN_USER_KEY + token, map);
+        //设置过期时间
+        stringRedisTemplate.expire(LOGIN_USER_KEY + token, LOGIN_USER_TTL, TimeUnit.MINUTES);
+
+        return Result.success(token);
     }
 }
