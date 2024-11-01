@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xiaohai.mapper.QuestionSubmitMapper">
+
+    <!-- Result Map -->
+    <resultMap id="statusPQVOMap" type="com.xiaohai.model.vo.StatusPageQueryVO">
+        <id property="runRecord" column="id"/>
+        <result property="username" column="username"/>
+        <result property="questionInfo" column="question_info"/>
+        <result property="result" column="result"/>
+        <result property="runTime" column="run_time"/>
+        <result property="runMemory" column="run_memory"/>
+        <result property="length" column="code_length"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <!-- Select statement with dynamic SQL for name and questionNumber -->
+    <select id="pageQuery" resultMap="statusPQVOMap">
+        SELECT
+        s.id,
+        u.user_name AS username,
+        CONCAT(q.number, '-', q.title) AS question_info,
+        s.result,
+        s.run_time,
+        s.run_memory,
+        LENGTH(s.code) AS code_length,
+        s.create_time
+        FROM
+        question_submit s
+        JOIN
+        user u ON s.user_id = u.id
+        JOIN
+        question q ON s.question_number = q.number
+        WHERE
+        1=1
+        <if test="username != null and username != ''">
+            AND u.user_name LIKE CONCAT('%', #{username}, '%')
+        </if>
+        <if test="questionNumber != null and questionNumber != ''">
+            AND q.number = #{questionNumber}
+        </if>
+    </select>
+</mapper>
