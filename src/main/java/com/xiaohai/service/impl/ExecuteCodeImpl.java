@@ -11,6 +11,7 @@ import com.xiaohai.model.po.QuestionCase;
 import com.xiaohai.model.po.QuestionSubmit;
 import com.xiaohai.service.ExecuteCodeService;
 import com.xiaohai.utils.Result;
+import com.xiaohai.utils.UserHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class ExecuteCodeImpl implements ExecuteCodeService {
     @Override
     public Result executeCode(ExecuteCodeDTO executeCodeDTO) {
         if(StringUtils.isBlank(executeCodeDTO.getCode())){
-            return Result.fail("代码不对！");
+            return Result.fail("提交的为空！！");
         }
         //1.先查询数据库中所有输入输出用例
         List<QuestionCase> questionCases = questionCaseMapper.selectByQuestionNum(executeCodeDTO.getQuestionNumber());
@@ -55,7 +56,7 @@ public class ExecuteCodeImpl implements ExecuteCodeService {
                 lastExecuteCodeResponse = executeCodeResponse;
                 if(!questionCase.getOutputList().equals(codeOutPut)){
                     log.info("解答错误,{}",executeCodeResponse);
-                    executeCodeResponse.setStatus(0);
+                    executeCodeResponse.setStatus(0);//解答错误
                     insertQuestionSubmit(executeCodeDTO,lastExecuteCodeResponse);
                     return Result.success(executeCodeResponse);//你这个执行成功了，但是解答错误
                 }
@@ -91,7 +92,7 @@ public class ExecuteCodeImpl implements ExecuteCodeService {
         questionSubmit.setCode(executeCodeDTO.getCode());
         questionSubmit.setCreateTime(new Date());
         questionSubmit.setRunMemory(100);
-        questionSubmit.setUserId(1);//todo:假数据，之后需要联合登录
+        questionSubmit.setUserId(UserHolder.getUser().getId());//todo:假数据，之后需要联合登录
         questionSubmitMapper.insert(questionSubmit);
     }
 

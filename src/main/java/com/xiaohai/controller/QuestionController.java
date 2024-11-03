@@ -2,8 +2,10 @@ package com.xiaohai.controller;
 
 
 import com.xiaohai.model.dto.QuestionDTO;
+import com.xiaohai.model.dto.QuestionPageQueryDTO;
 import com.xiaohai.model.po.Question;
 import com.xiaohai.service.QuestionService;
+import com.xiaohai.utils.PageResult;
 import com.xiaohai.utils.Result;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -33,4 +35,10 @@ public class QuestionController {
         return questionService.getByNumber(number);
     }
 
+    @GetMapping("/page")
+    public Result<PageResult> page(QuestionPageQueryDTO questionPQDto) {
+        log.info("题目大全分页搜索：{}",questionPQDto);
+        PageResult pageResult =  questionService.pageQuery(questionPQDto);
+        return Result.success(pageResult);
+    }
 }

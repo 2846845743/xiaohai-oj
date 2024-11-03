@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xiaohai.mapper.QuestionMapper">
+
+    <!-- Result Map -->
+    <resultMap id="questionMap" type="com.xiaohai.model.vo.QuestionPageQueryVO">
+        <result property="questionNumber" column="number"/>
+        <result property="questionTitle" column="title"/>
+
+        <result property="passNumber" column="passNumber"/>
+        <result property="submitNumber" column="submitNumber"/>
+
+    </resultMap>
+
+    <select id="queryPage" resultType="com.xiaohai.model.vo.QuestionPageQueryVO" resultMap="questionMap">
+        select q.number as number,q.title as title ,SUM(CASE WHEN s.result = 1 THEN 1 ELSE 0 END) AS passNumber,count(*) as submitNumber
+        from question q inner join question_submit s
+                                   on q.number = s.question_number
+
+        where
+        1=1
+        <if test="title != null and title != ''">
+            AND q.title LIKE CONCAT('%', #{title}, '%')
+        </if>
+        group by q.number
+    </select>
+
+</mapper>

@@ -10,4 +10,6 @@ public interface UserService extends IService<User> {
     void register(UserDTO userDTO) throws Exception;
 
     Result<String> login(UserLoginDTO user);
+
+    Result<String> getAvator();
 }

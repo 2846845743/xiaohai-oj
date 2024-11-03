@@ -15,6 +15,7 @@ import com.xiaohai.model.po.User;
 import com.xiaohai.service.UserService;
 import com.xiaohai.utils.MD5;
 import com.xiaohai.utils.Result;
+import com.xiaohai.utils.UserHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -189,6 +190,20 @@ public class UserServiceImpl implements UserService {
         stringRedisTemplate.expire(LOGIN_USER_KEY + token, LOGIN_USER_TTL, TimeUnit.MINUTES);
 
         //todo 保存用户信息到ThreadLocal
+        UserHolder.saveUser(userRedis);
+
         return Result.success(token);
+    }
+
+    @Override
+    public Result<String> getAvator() {
+        //根据当前登录用户id查询用户的头像地址
+        Integer userId = UserHolder.getUser().getId();
+        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.select(User::getAvatarUrl).eq(User::getId, userId);
+        User user = mapper.selectOne(lambdaQueryWrapper);
+        log.info("获取用户头像地址：{}",user.getAvatarUrl());
+
+        return Result.success(user.getAvatarUrl());
     }
 }

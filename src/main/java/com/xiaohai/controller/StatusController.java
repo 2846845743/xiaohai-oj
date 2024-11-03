@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 //用户提交记录控制器
-@CrossOrigin
+
 @RequestMapping("status")
 @RestController
 public class StatusController {

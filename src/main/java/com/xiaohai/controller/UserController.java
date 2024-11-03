@@ -37,5 +37,11 @@ public class UserController {
         return Result.success(null);
     }
 
-
+    //获取用户头像
+    @GetMapping("/avatar")
+    public Result<String> getAvator() throws Exception {
+        //
+        log.info("正在获取当前登录用户头像");
+        return userService.getAvator();
+    }
 }

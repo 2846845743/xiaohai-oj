@@ -4,10 +4,15 @@ import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.xiaohai.mapper.QuestionMapper;
 import com.xiaohai.model.dto.QuestionDTO;
+import com.xiaohai.model.dto.QuestionPageQueryDTO;
 import com.xiaohai.model.po.Question;
+import com.xiaohai.model.vo.QuestionPageQueryVO;
 import com.xiaohai.service.QuestionService;
+import com.xiaohai.utils.PageResult;
 import com.xiaohai.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -105,5 +110,14 @@ public class QuestionServiceImpl implements QuestionService {
         lambdaQueryWrapper.eq(Question::getNumber, number);
         Question question = questionMapper.selectOne(lambdaQueryWrapper);
         return Result.success(question);
+    }
+
+    @Override
+    public PageResult pageQuery(QuestionPageQueryDTO questionPQDto) {
+        //根据title模糊查询
+        PageHelper.startPage(questionPQDto.getPage(), questionPQDto.getPageSize());
+
+        Page<QuestionPageQueryVO> page = questionMapper.queryPage(questionPQDto.getTitle());
+        return new PageResult(page.getTotal(),page.getResult());
     }
 }
