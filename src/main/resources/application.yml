@@ -1,6 +1,10 @@
 server:
   port: 8081
 spring:
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
   redis:
     host: 117.72.91.159
     port: 16379
@@ -13,3 +17,10 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case=true:
   mapper-locations: classpath*:mapper/*.xml
+minio:
+  endpoint: http://117.72.91.159:8999
+  access-key: root
+  secret-key: 123456789
+  bucketName: user01
+
+

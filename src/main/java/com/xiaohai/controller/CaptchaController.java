@@ -26,7 +26,6 @@ import java.util.concurrent.TimeUnit;
 
 //验证码控制器
 @Slf4j
-@CrossOrigin(exposedHeaders = "Uuid")
 @RestController
 public class CaptchaController {
 
