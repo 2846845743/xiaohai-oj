@@ -17,6 +17,14 @@
         <result property="createTime" column="create_time"/>
     </resultMap>
 
+    <resultMap id="rankMap" type="com.xiaohai.model.vo.RankVO">
+
+        <result property="username" column="user_name"/>
+        <result property="email" column="email"/>
+        <result property="passNumber" column="submitNumber"/>
+
+    </resultMap>
+
     <!-- Select statement with dynamic SQL for name and questionNumber -->
     <select id="pageQuery" resultMap="statusPQVOMap">
         SELECT
@@ -43,4 +51,16 @@
             AND q.number = #{questionNumber}
         </if>
     </select>
+<!--    查询提交表和用户表中的：用户邮箱，用户名，以及用户通过记录-->
+    <select id="queryRankPage" resultMap="rankMap" parameterType="com.xiaohai.model.dto.RankDTO">
+        SELECT u.user_name, u.email, COUNT(*) AS submitNumber
+        FROM question_submit qs
+                 INNER JOIN user u ON u.id = qs.user_id
+        WHERE qs.result = 1
+        GROUP BY u.user_name, u.email
+            LIMIT #{pageSize} OFFSET #{offset};
+
+
+    </select>
+
 </mapper>
