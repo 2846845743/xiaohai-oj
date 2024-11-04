@@ -24,7 +24,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 // 设置放行请求
                 .excludePathPatterns(
                         "/user/login",
-                        "/status/page"
+                        "/status/page",
+                        "/captcha",
+                        "/validateCaptcha"
 
                 ).order(1); // 优先级默认都是0，值越大优先级越低
         // 添加刷新token的拦截器
