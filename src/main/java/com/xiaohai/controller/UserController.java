@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @CrossOrigin
 @Slf4j
 @RestController
@@ -43,5 +45,12 @@ public class UserController {
         //
         log.info("正在获取当前登录用户头像");
         return userService.getAvator();
+    }
+
+    //用户登出
+    @PostMapping("/logout")
+    public Result<String> logout(HttpServletRequest request){
+
+        return userService.logout(request);
     }
 }

@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -205,5 +206,19 @@ public class UserServiceImpl implements UserService {
         log.info("获取用户头像地址：{}",user.getAvatarUrl());
 
         return Result.success(user.getAvatarUrl());
+    }
+
+    @Override
+    public Result<String> logout(HttpServletRequest request) {
+        Integer userId = UserHolder.getUser().getId();
+        //从请求头获取token值
+        String token = request.getHeader("Authorization");
+        if(token==null){
+            //用户身份已过期！
+            return Result.success("无需！");
+        }
+        stringRedisTemplate.delete(LOGIN_USER_KEY + token);
+
+        return Result.success("退出成功！");
     }
 }

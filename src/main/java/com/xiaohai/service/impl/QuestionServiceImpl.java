@@ -10,6 +10,7 @@ import com.xiaohai.mapper.QuestionMapper;
 import com.xiaohai.model.dto.QuestionDTO;
 import com.xiaohai.model.dto.QuestionPageQueryDTO;
 import com.xiaohai.model.po.Question;
+import com.xiaohai.model.vo.QuestionDetail;
 import com.xiaohai.model.vo.QuestionPageQueryVO;
 import com.xiaohai.service.QuestionService;
 import com.xiaohai.utils.PageResult;
@@ -105,11 +106,9 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public Result getByNumber(Integer number) {
-        //根据编号返回Question
-        LambdaQueryWrapper<Question> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(Question::getNumber, number);
-        Question question = questionMapper.selectOne(lambdaQueryWrapper);
-        return Result.success(question);
+        //TODO 根据题目number信息，返回题目详情信息，包括题目描述，题目标题，题目number，输入输出样例，时限，内存限制，总提交数，通过数
+        QuestionDetail questionDetail =  questionMapper.getQuestionByNumber(number);
+        return  Result.success(questionDetail);
     }
 
     @Override
