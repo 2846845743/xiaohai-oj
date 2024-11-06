@@ -15,7 +15,7 @@ public class QuestionPageQueryVO {
     //todo 3.标题标签，暂时不管
 
     //4.已通过的记录数
-    private int passNumber;
+    private int passNumber = 0;
     //5.题目提交总数
-    private  int submitNumber;
+    private  int submitNumber = 0;
 }

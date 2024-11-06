@@ -16,16 +16,18 @@
     </resultMap>
 
     <select id="queryPage" resultType="com.xiaohai.model.vo.QuestionPageQueryVO" resultMap="questionMap">
-        select q.number as number,q.title as title ,SUM(CASE WHEN s.result = 1 THEN 1 ELSE 0 END) AS passNumber,count(*) as submitNumber
-        from question q inner join question_submit s
-                                   on q.number = s.question_number
-
-        where
-        1=1
+        SELECT q.number AS number,
+        q.title AS title,
+        SUM(CASE WHEN s.result = 1 THEN 1 ELSE 0 END) AS passNumber,
+        COUNT(s.question_number) AS submitNumber
+        FROM question q
+        LEFT JOIN question_submit s ON q.number = s.question_number
+        WHERE 1=1
         <if test="title != null and title != ''">
             AND q.title LIKE CONCAT('%', #{title}, '%')
         </if>
-        group by q.number
+        GROUP BY q.number order by q.number asc
+
     </select>
 
 </mapper>
