@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface QuestionMapper extends BaseMapper<Question> {
     //根据题目标题模糊查询
-    Page<QuestionPageQueryVO> queryPage(String title);
+    Page<QuestionPageQueryVO> queryPage(String title,Integer userId);
 
 
     @Select("\n" +

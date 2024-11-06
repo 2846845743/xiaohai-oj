@@ -15,6 +15,7 @@ import com.xiaohai.model.vo.QuestionPageQueryVO;
 import com.xiaohai.service.QuestionService;
 import com.xiaohai.utils.PageResult;
 import com.xiaohai.utils.Result;
+import com.xiaohai.utils.UserHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -115,8 +116,8 @@ public class QuestionServiceImpl implements QuestionService {
     public PageResult pageQuery(QuestionPageQueryDTO questionPQDto) {
         //根据title模糊查询
         PageHelper.startPage(questionPQDto.getPage(), questionPQDto.getPageSize());
-
-        Page<QuestionPageQueryVO> page = questionMapper.queryPage(questionPQDto.getTitle());
+        Integer userId = UserHolder.getUser().getId();
+        Page<QuestionPageQueryVO> page = questionMapper.queryPage(questionPQDto.getTitle(),userId);
         return new PageResult(page.getTotal(),page.getResult());
     }
 }

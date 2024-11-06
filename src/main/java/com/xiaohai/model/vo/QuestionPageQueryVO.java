@@ -18,4 +18,6 @@ public class QuestionPageQueryVO {
     private int passNumber = 0;
     //5.题目提交总数
     private  int submitNumber = 0;
+
+    private int hasUserPassed;
 }

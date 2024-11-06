@@ -12,6 +12,8 @@
 
         <result property="passNumber" column="passNumber"/>
         <result property="submitNumber" column="submitNumber"/>
+        <result property="hasUserPassed" column="hasUserPassed"/>
+
 
     </resultMap>
 
@@ -19,14 +21,17 @@
         SELECT q.number AS number,
         q.title AS title,
         SUM(CASE WHEN s.result = 1 THEN 1 ELSE 0 END) AS passNumber,
-        COUNT(s.question_number) AS submitNumber
+        COUNT(s.question_number) AS submitNumber,
+        MAX(CASE WHEN s.user_id = #{userId} AND s.result = 1 THEN TRUE ELSE FALSE END) AS hasUserPassed
         FROM question q
         LEFT JOIN question_submit s ON q.number = s.question_number
         WHERE 1=1
         <if test="title != null and title != ''">
             AND q.title LIKE CONCAT('%', #{title}, '%')
         </if>
-        GROUP BY q.number order by q.number asc
+        GROUP BY q.number
+        ORDER BY q.number ASC
+
 
     </select>
 
