@@ -1,6 +1,7 @@
 package com.xiaohai.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -16,20 +17,22 @@ import com.xiaohai.service.QuestionService;
 import com.xiaohai.utils.PageResult;
 import com.xiaohai.utils.Result;
 import com.xiaohai.utils.UserHolder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 @Service
+@Slf4j
 public class QuestionServiceImpl implements QuestionService {
 
     @Autowired
     private QuestionMapper questionMapper;
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     @Override
     public boolean saveBatch(Collection<Question> entityList, int batchSize) {
@@ -114,10 +117,22 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public PageResult pageQuery(QuestionPageQueryDTO questionPQDto) {
+        //先查询缓存
+        String redisPage = stringRedisTemplate.opsForValue().get("question-1");
+        if(redisPage!=null && questionPQDto.getPage()==1 && (questionPQDto.getTitle()==null || questionPQDto.getTitle().isEmpty())){
+            //第一页并且有数据，则返回
+            log.info("走redis了");
+            new PageResult(JSON.parseArray(redisPage,QuestionPageQueryVO.class).size(),JSON.parseArray(redisPage,QuestionPageQueryVO.class));
+        }
+
         //根据title模糊查询
         PageHelper.startPage(questionPQDto.getPage(), questionPQDto.getPageSize());
         Integer userId = UserHolder.getUser().getId();
         Page<QuestionPageQueryVO> page = questionMapper.queryPage(questionPQDto.getTitle(),userId);
+        //如果第一页将查询到的结果存入redis
+        if(questionPQDto.getPage()==1){
+            stringRedisTemplate.opsForValue().set("question-1", JSON.toJSONString(page.getResult()));
+        }
         return new PageResult(page.getTotal(),page.getResult());
     }
 }

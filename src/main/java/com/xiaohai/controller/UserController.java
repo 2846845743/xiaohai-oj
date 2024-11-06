@@ -23,7 +23,7 @@ public class UserController {
 
     //用户登录
     @PostMapping("/login")
-    public Result<String> login(@RequestBody UserLoginDTO user) throws Exception {
+    public Result<String> login(@RequestBody UserLoginDTO user) {
         //用户登录,登录成功返回token
         log.info("用户:{}正在登录", user);
         return userService.login(user);
@@ -41,7 +41,7 @@ public class UserController {
 
     //获取用户头像
     @GetMapping("/avatar")
-    public Result<String> getAvator() throws Exception {
+    public Result<String> getAvator() {
         //
         log.info("正在获取当前登录用户头像");
         return userService.getAvator();

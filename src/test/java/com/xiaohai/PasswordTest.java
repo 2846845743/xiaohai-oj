@@ -1,11 +1,18 @@
 package com.xiaohai;
 
+import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.github.pagehelper.Page;
+import com.xiaohai.mapper.QuestionMapper;
 import com.xiaohai.model.dto.ExecuteMessage;
 import com.xiaohai.model.po.User;
+import com.xiaohai.model.vo.QuestionPageQueryVO;
 import com.xiaohai.utils.ProcessUtils;
+import org.json.JSONArray;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.StringRedisTemplate;
 
 import javax.xml.bind.DatatypeConverter;
 import java.io.OutputStream;
@@ -67,5 +74,22 @@ public class PasswordTest {
 //        System.out.println(end);
 //
 //    }
+
+    @Autowired
+    private QuestionMapper questionMapper;
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
+    @Test
+    public void test_redis(){
+        Page<QuestionPageQueryVO> questionPageQueryVOS = questionMapper.queryPage(null, 8);
+
+
+
+        stringRedisTemplate.opsForValue().set("test", JSON.toJSONString(questionPageQueryVOS.getResult()));
+
+
+    }
+
 
 }
