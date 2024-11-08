@@ -117,7 +117,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public PageResult pageQuery(QuestionPageQueryDTO questionPQDto) {
-        //先查询缓存
+//        先查询缓存
         String redisPage = stringRedisTemplate.opsForValue().get("question-1");
         if(redisPage!=null && questionPQDto.getPage()==1 && (questionPQDto.getTitle()==null || questionPQDto.getTitle().isEmpty())){
             //第一页并且有数据，则返回

@@ -95,7 +95,16 @@ public class UserServiceImpl implements UserService {
         String username = userDTO.getUsername();
         String password = userDTO.getPassword();
         String email = userDTO.getEmail();
-        if(null == username || null == password || null == email){
+        String code = userDTO.getCode();
+        //1.判断code是否匹配。
+        //首先根据uuid查询redis
+        String redisCode = stringRedisTemplate.opsForValue().get(userDTO.getUuid());
+        if(redisCode==null || !redisCode.equals(code)){
+            throw new Exception("验证码错误!");
+        }
+
+
+        if(null == username || null == password || null == email || null == code){
             throw new Exception("系统异常:用户名或密码为空!");
         }
         //查询username是否重复
@@ -105,7 +114,7 @@ public class UserServiceImpl implements UserService {
         if(users!=null && users.size()>0){
             throw new Exception("用户已存在");
         }
-        //查询username是否重复
+        //查询email是否重复
         LambdaQueryWrapper<User> lambdaQueryWrapper2 = new LambdaQueryWrapper<>();
         LambdaQueryWrapper<User> eq2 = lambdaQueryWrapper2.select(User::getId).eq(User::getEmail, email);
         users = mapper.selectList(eq2);
