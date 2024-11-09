@@ -16,9 +16,9 @@ public interface QuestionMapper extends BaseMapper<Question> {
 
     @Select("\n" +
             "SELECT\n" +
-            "    q.number,\n" +
+            "    q.number as questionNumber,\n" +
             "    q.description,\n" +
-            "    q.title,\n" +
+            "    q.title,q.input_desc as inputDesc ,q.output_desc as outputDesc ,\n " +
             "    q.limit_memory,\n" +
             "    q.limit_time,\n" +
             "    qs.submitNumber,\n" +

@@ -8,10 +8,12 @@ import lombok.Data;
 @Data
 public class QuestionDetail {
 
-    @TableField("number")
+
     private int questionNumber;
     private String description;
     private String title;
+    private String inputDesc;
+    private String outputDesc;
     private int limitTime;
     private int limitMemory;
     private int passNumber;

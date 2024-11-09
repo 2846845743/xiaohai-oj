@@ -50,6 +50,7 @@
         <if test="questionNumber != null and questionNumber != ''">
             AND q.number = #{questionNumber}
         </if>
+        order by s.id desc
     </select>
 <!--    查询提交表和用户表中的：用户邮箱，用户名，以及用户通过记录-->
     <select id="queryRankPage" resultMap="rankMap" parameterType="com.xiaohai.model.dto.RankDTO">
