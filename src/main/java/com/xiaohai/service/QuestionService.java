@@ -8,6 +8,7 @@ import com.xiaohai.utils.PageResult;
 import com.xiaohai.utils.Result;
 
 public interface QuestionService extends IService<Question> {
+    PageResult pageQuery2(QuestionPageQueryDTO questionPQDto);
     Result addQuestion(QuestionDTO question);
 
     Result getByNumber(Integer number);

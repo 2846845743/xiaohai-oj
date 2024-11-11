@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.xiaohai.mapper.QuestionMapper;
+import com.xiaohai.mapper.QuestionSummaryMapper;
 import com.xiaohai.model.dto.QuestionDTO;
 import com.xiaohai.model.dto.QuestionPageQueryDTO;
 import com.xiaohai.model.po.Question;
@@ -133,6 +134,21 @@ public class QuestionServiceImpl implements QuestionService {
         if(questionPQDto.getPage()==1){
             stringRedisTemplate.opsForValue().set("question-1", JSON.toJSONString(page.getResult()));
         }
+        return new PageResult(page.getTotal(),page.getResult());
+    }
+
+    @Autowired
+    private QuestionSummaryMapper questionSummaryMapper;
+
+
+    public PageResult pageQuery2(QuestionPageQueryDTO questionPQDto) {
+
+        log.info("走新表优化");
+        //根据title模糊查询
+        PageHelper.startPage(questionPQDto.getPage(), questionPQDto.getPageSize());
+        Integer userId = UserHolder.getUser().getId();
+        Page<QuestionPageQueryVO> page = questionSummaryMapper.queryPage(questionPQDto.getTitle(),userId);
+
         return new PageResult(page.getTotal(),page.getResult());
     }
 }

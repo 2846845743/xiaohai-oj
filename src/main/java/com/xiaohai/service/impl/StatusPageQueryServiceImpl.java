@@ -3,6 +3,7 @@ package com.xiaohai.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.xiaohai.mapper.QuestionSubmitMapper;
+import com.xiaohai.mapper.StatusSummaryMapper;
 import com.xiaohai.model.dto.StatusPageQueryDTO;
 import com.xiaohai.model.po.QuestionSubmit;
 import com.xiaohai.model.vo.StatusPageQueryVO;
@@ -27,6 +28,19 @@ public class StatusPageQueryServiceImpl implements StatusPageQueryService {
         PageHelper.startPage(statusPageQueryDTO.getPage(),statusPageQueryDTO.getPageSize());
 
         Page<StatusPageQueryVO> page = questionSubmitMapper.pageQuery(statusPageQueryDTO);
+
+        return new PageResult(page.getTotal(),page.getResult());
+    }
+
+    @Autowired
+    private StatusSummaryMapper statusSummaryMapper;
+
+
+    public PageResult pageQuery2(StatusPageQueryDTO statusPageQueryDTO) {
+        //开启分页查询
+        PageHelper.startPage(statusPageQueryDTO.getPage(),statusPageQueryDTO.getPageSize());
+
+        Page<StatusPageQueryVO> page = statusSummaryMapper.pageQuery(statusPageQueryDTO);
 
         return new PageResult(page.getTotal(),page.getResult());
     }

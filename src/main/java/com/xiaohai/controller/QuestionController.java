@@ -38,7 +38,7 @@ public class QuestionController {
     @GetMapping("/page")
     public Result<PageResult> page(QuestionPageQueryDTO questionPQDto) {
         log.info("题目大全分页搜索：{}",questionPQDto);
-        PageResult pageResult =  questionService.pageQuery(questionPQDto);
+        PageResult pageResult =  questionService.pageQuery2(questionPQDto);
         return Result.success(pageResult);
     }
 

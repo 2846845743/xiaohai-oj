@@ -23,9 +23,10 @@ public class StatusController {
     @GetMapping("/page")
     public Result<PageResult> page(StatusPageQueryDTO statusPageQueryDTO){
       log.info("statusPageQueryDTO:{}", statusPageQueryDTO);
-      PageResult pageResult =statusPageQueryService.pageQuery(statusPageQueryDTO);
+      PageResult pageResult =statusPageQueryService.pageQuery2(statusPageQueryDTO);
       return Result.success(pageResult);
     }
+
 
 
 }

@@ -4,10 +4,17 @@ import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.Page;
 import com.xiaohai.mapper.QuestionMapper;
+import com.xiaohai.mapper.QuestionSubmitMapper;
+import com.xiaohai.mapper.QuestionSummaryMapper;
+import com.xiaohai.mapper.StatusSummaryMapper;
 import com.xiaohai.model.dto.ExecuteMessage;
+import com.xiaohai.model.dto.StatusPageQueryDTO;
 import com.xiaohai.model.po.User;
 import com.xiaohai.model.vo.QuestionPageQueryVO;
+import com.xiaohai.model.vo.StatusPageQueryVO;
 import com.xiaohai.utils.ProcessUtils;
+import com.xiaohai.utils.UserHolder;
+import org.checkerframework.checker.units.qual.A;
 import org.json.JSONArray;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,14 +87,22 @@ public class PasswordTest {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
+    @Autowired
+    private QuestionSummaryMapper questionSummaryMapper;
+
+    @Autowired
+    private QuestionSubmitMapper questionSubmitMapper;
+    @Autowired
+    private StatusSummaryMapper statusSummaryMapper;
+
     @Test
     public void test_redis(){
-        Page<QuestionPageQueryVO> questionPageQueryVOS = questionMapper.queryPage(null, 8);
+        StatusPageQueryDTO statusPageQueryDTO = new StatusPageQueryDTO();
 
-
-
-        stringRedisTemplate.opsForValue().set("test", JSON.toJSONString(questionPageQueryVOS.getResult()));
-
+        Page<StatusPageQueryVO> list = questionSubmitMapper.pageQuery(statusPageQueryDTO);
+        for(StatusPageQueryVO statusPageQueryVO : list){
+            statusSummaryMapper.insert(statusPageQueryVO);
+        }
 
     }
 

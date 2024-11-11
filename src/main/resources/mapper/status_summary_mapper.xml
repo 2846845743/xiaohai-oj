@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xiaohai.mapper.StatusSummaryMapper">
+
+<!--    <resultMap id="map" type="com.xiaohai.model.vo.StatusPageQueryVO">-->
+<!--        <result column=""></result>-->
+<!--    </resultMap>-->
+
+   <select id="pageQuery" parameterType="com.xiaohai.model.dto.StatusPageQueryDTO" resultType="com.xiaohai.model.vo.StatusPageQueryVO">
+       select * from status_summary where
+        1=1
+       <if test="questionNumber != null and questionNumber != ''">
+            and question_info like CONCAT('%', #{questionNumber}, '%')
+       </if>
+       <if test="username != null and username != ''">
+           AND username LIKE CONCAT('%', #{username}, '%')
+       </if>
+       order by run_record desc
+   </select>
+
+</mapper>
