@@ -3,6 +3,7 @@ package com.xiaohai.controller;
 
 import com.xiaohai.model.dto.QuestionDTO;
 import com.xiaohai.model.dto.QuestionPageQueryDTO;
+import com.xiaohai.model.dto.QuestionSaveDTO;
 import com.xiaohai.model.po.Question;
 import com.xiaohai.service.QuestionService;
 import com.xiaohai.utils.PageResult;
@@ -38,9 +39,15 @@ public class QuestionController {
     @GetMapping("/page")
     public Result<PageResult> page(QuestionPageQueryDTO questionPQDto) {
         log.info("题目大全分页搜索：{}",questionPQDto);
-        PageResult pageResult =  questionService.pageQuery2(questionPQDto);
+        PageResult pageResult =  questionService.pageQuery3(questionPQDto);
         return Result.success(pageResult);
     }
 
+    @PostMapping
+    public Result add(@RequestBody QuestionSaveDTO questionSaveDTO) {
+        log.info("新增题目-{}",questionSaveDTO);
+        questionService.saveQuestion(questionSaveDTO);
+        return Result.success(null);
+    }
 
 }

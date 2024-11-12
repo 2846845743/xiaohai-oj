@@ -8,6 +8,8 @@ import com.xiaohai.model.vo.QuestionPageQueryVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 @Mapper
 public interface QuestionMapper extends BaseMapper<Question> {
     //根据题目标题模糊查询
@@ -48,4 +50,12 @@ public interface QuestionMapper extends BaseMapper<Question> {
             ") qc_min ON q.number = qc_min.question_number\n" +
             "LEFT JOIN question_case qc ON qc.id = qc_min.first_case_id where q.number=#{number};")
     QuestionDetail getQuestionByNumber(Integer number);
+
+
+    @Select("SELECT t.name\n" +
+            "FROM question q\n" +
+            "JOIN question_type qt ON q.number = qt.question_number\n" +
+            "JOIN type t ON qt.type_id = t.id\n" +
+            "WHERE q.number = #{questionNumber};\n")
+    List<String> selectTypeNameByQuestionNumber(int questionNumber);
 }

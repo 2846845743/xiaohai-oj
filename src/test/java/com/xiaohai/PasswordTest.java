@@ -3,15 +3,14 @@ package com.xiaohai;
 import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.Page;
-import com.xiaohai.mapper.QuestionMapper;
-import com.xiaohai.mapper.QuestionSubmitMapper;
-import com.xiaohai.mapper.QuestionSummaryMapper;
-import com.xiaohai.mapper.StatusSummaryMapper;
+import com.xiaohai.mapper.*;
 import com.xiaohai.model.dto.ExecuteMessage;
+import com.xiaohai.model.dto.QuestionSaveDTO;
 import com.xiaohai.model.dto.StatusPageQueryDTO;
 import com.xiaohai.model.po.User;
 import com.xiaohai.model.vo.QuestionPageQueryVO;
 import com.xiaohai.model.vo.StatusPageQueryVO;
+import com.xiaohai.service.QuestionService;
 import com.xiaohai.utils.ProcessUtils;
 import com.xiaohai.utils.UserHolder;
 import org.checkerframework.checker.units.qual.A;
@@ -26,7 +25,9 @@ import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @SpringBootTest
 public class PasswordTest {
@@ -97,13 +98,28 @@ public class PasswordTest {
 
     @Test
     public void test_redis(){
-        StatusPageQueryDTO statusPageQueryDTO = new StatusPageQueryDTO();
+        List<String> strings = questionMapper.selectTypeNameByQuestionNumber(102);
+        System.out.println(strings);
 
-        Page<StatusPageQueryVO> list = questionSubmitMapper.pageQuery(statusPageQueryDTO);
-        for(StatusPageQueryVO statusPageQueryVO : list){
-            statusSummaryMapper.insert(statusPageQueryVO);
-        }
 
+    }
+    @Autowired
+    private QuestionService questionService;
+    @Test
+    public void test_insert(){
+        QuestionSaveDTO questionSaveDTO = new QuestionSaveDTO();
+        questionSaveDTO.setNumber(1008);
+        questionSaveDTO.setDescription("sasa");
+        questionSaveDTO.setTitle("title");
+        questionSaveDTO.setInputDesc("输入描述");
+        questionSaveDTO.setOutputDesc("输出描述");
+        Map<String,String> map = new HashMap<>();
+        map.put("1 2","3");
+        map.put("4 6","10");
+
+        questionSaveDTO.setTypeList("1,2,数组");
+        questionSaveDTO.setTestCase(map);
+        questionService.saveQuestion(questionSaveDTO);
     }
 
 

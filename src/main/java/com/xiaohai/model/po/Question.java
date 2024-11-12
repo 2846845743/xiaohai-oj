@@ -14,11 +14,9 @@ public class Question {
     private Integer  id;
     private String  title;
     private int  number;
-    @TableField("input_list")
-    private String  inputList;
-    @TableField("output_list")
-    private String  outputList;
-    @TableField("is_delete")
+
+    private String inputDesc;
+    private String outputDesc;//输入输出描述
     private int  isDelete;
     private String  description;
     @TableField("total_commit_num")
