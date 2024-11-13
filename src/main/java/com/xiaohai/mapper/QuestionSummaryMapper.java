@@ -27,4 +27,16 @@ public interface QuestionSummaryMapper extends BaseMapper<QuestionPageQueryVO> {
 
     @Select("select * from question_summary")
     Page<QuestionPageQueryVO> queryPage(String title, Integer userId);
+
+    @Select("select count(*) from question_submit where user_id = #{id} and result =1")
+    int queryPassNumberById(Integer id);
+
+    @Select("select count(*) from question_submit where user_id = #{id} and result =3")
+    int queryWrongNumberById(Integer id);
+
+    @Select("select count(*) from question_submit where user_id = #{id}")
+    int querySubmitNumberById(Integer id);
+
+    @Select("select distinct question_number from question_submit where user_id =#{id}")
+    List<Integer> queryPassQuestions(Integer id);
 }

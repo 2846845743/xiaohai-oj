@@ -4,6 +4,7 @@ package com.xiaohai.controller;
 import com.xiaohai.model.dto.UserDTO;
 import com.xiaohai.model.dto.UserLoginDTO;
 import com.xiaohai.model.po.User;
+import com.xiaohai.model.vo.UserInfo;
 import com.xiaohai.service.UserService;
 import com.xiaohai.utils.Result;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,13 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    //查询用户个人信息接口
+    @GetMapping
+    public Result<UserInfo> info(){
+        log.info("正在查询用户个人信息");
+        return userService.info();
+    }
 
     //用户登录
     @PostMapping("/login")

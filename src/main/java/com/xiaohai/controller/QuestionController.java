@@ -1,6 +1,7 @@
 package com.xiaohai.controller;
 
 
+import com.xiaohai.mapper.TypeMapper;
 import com.xiaohai.model.dto.QuestionDTO;
 import com.xiaohai.model.dto.QuestionPageQueryDTO;
 import com.xiaohai.model.dto.QuestionSaveDTO;
@@ -13,15 +14,28 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 //题目相关控制器
 @RestController
 @RequestMapping("/question")
 @Slf4j
 @CrossOrigin
 public class QuestionController {
-
     @Autowired
     private QuestionService questionService;
+
+    @Autowired
+    private TypeMapper typeMapper;
+
+    //查看所有标签
+    @GetMapping("/types")
+    public Result types() {
+        log.info("正在查看所有标签名称");
+        List<String> strings =
+                typeMapper.selectAllType();
+        return Result.success(strings);
+    }
 
     @PostMapping("/add")
     public Result add(@RequestBody QuestionDTO question) {

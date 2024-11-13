@@ -10,8 +10,11 @@ import com.xiaohai.model.dto.StatusPageQueryDTO;
 import com.xiaohai.model.po.User;
 import com.xiaohai.model.vo.QuestionPageQueryVO;
 import com.xiaohai.model.vo.StatusPageQueryVO;
+import com.xiaohai.model.vo.UserInfo;
 import com.xiaohai.service.QuestionService;
+import com.xiaohai.service.UserService;
 import com.xiaohai.utils.ProcessUtils;
+import com.xiaohai.utils.Result;
 import com.xiaohai.utils.UserHolder;
 import org.checkerframework.checker.units.qual.A;
 import org.json.JSONArray;
@@ -122,5 +125,15 @@ public class PasswordTest {
         questionService.saveQuestion(questionSaveDTO);
     }
 
+    @Autowired
+    UserService userService;
+    @Test
+    public void test_userInfo(){
+        //测试用户信息接口
+        Result<UserInfo> info =
+                userService.info();
+        UserInfo data = info.getData();
+        System.out.println(data );
+    }
 
 }

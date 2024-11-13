@@ -7,11 +7,13 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.xiaohai.mapper.QuestionSummaryMapper;
 import com.xiaohai.mapper.UserMapper;
 import com.xiaohai.model.dto.UserDTO;
 import com.xiaohai.model.dto.UserLoginDTO;
 import com.xiaohai.model.dto.UserRedis;
 import com.xiaohai.model.po.User;
+import com.xiaohai.model.vo.UserInfo;
 import com.xiaohai.service.UserService;
 import com.xiaohai.utils.MD5;
 import com.xiaohai.utils.Result;
@@ -229,5 +231,26 @@ public class UserServiceImpl implements UserService {
         stringRedisTemplate.delete(LOGIN_USER_KEY + token);
 
         return Result.success("退出成功！");
+    }
+    @Autowired
+    private QuestionSummaryMapper questionSummaryMapper;
+
+    @Override
+    public Result<UserInfo> info() {
+        if(UserHolder.getUser()==null){throw new RuntimeException("用户没登陆");}
+        Integer id = UserHolder.getUser().getId();
+//        Integer id = 8;
+        //1.查询用户基本信息-邮箱和用户名
+        User user = mapper.getById(id);
+        UserInfo ui = new UserInfo();
+        ui.setEmail(user.getEmail());
+        ui.setUsername(user.getUsername());
+        //2.根据提交记录表查询用户id为这个的所有记录数
+        ui.setPassNumber(questionSummaryMapper.queryPassNumberById(id));
+        ui.setWrongNumber(questionSummaryMapper.queryWrongNumberById(id));
+        ui.setSubmitNumber(questionSummaryMapper.querySubmitNumberById(id));
+        //3.获取通过题目题号大全
+        ui.setPassQuestions(questionSummaryMapper.queryPassQuestions(id));
+        return Result.success(ui);
     }
 }

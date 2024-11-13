@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.xiaohai.model.dto.UserDTO;
 import com.xiaohai.model.dto.UserLoginDTO;
 import com.xiaohai.model.po.User;
+import com.xiaohai.model.vo.UserInfo;
 import com.xiaohai.utils.Result;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,4 +17,6 @@ public interface UserService extends IService<User> {
     Result<String> getAvator();
 
     Result<String> logout(HttpServletRequest request);
+
+    Result<UserInfo> info();
 }
