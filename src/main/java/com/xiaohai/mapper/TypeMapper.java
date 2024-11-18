@@ -15,8 +15,8 @@ public interface TypeMapper extends BaseMapper<Type> {
     List<String> selectAllType();
 
     @Options(useGeneratedKeys = true,keyProperty = "id")
-    @Insert("insert into ")
-    void saveWithQuestion();
+    @Insert("insert into type values (null,#{typeName})")
+    void saveWithQuestion(String typeName);
 
     @Insert("insert into question_type values (null,#{number},#{typeId},now(),#{userId})")
     void insertWithQuestionNumber(int number, int typeId,int userId);

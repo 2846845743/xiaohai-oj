@@ -37,12 +37,12 @@ public class QuestionController {
         return Result.success(strings);
     }
 
-    @PostMapping("/add")
-    public Result add(@RequestBody QuestionDTO question) {
-        //新增问题
-        log.info("新增题目：{}",question);
-        return questionService.addQuestion(question);
-    }
+//    @PostMapping("/add")
+//    public Result add(@RequestBody QuestionDTO question) {
+//        //新增问题
+//        log.info("新增题目：{}",question);
+//        return questionService.addQuestion(question);
+//    }
 
     @GetMapping("/{number}")
     public Result get(@PathVariable Integer number) {
@@ -57,7 +57,7 @@ public class QuestionController {
         return Result.success(pageResult);
     }
 
-    @PostMapping
+    @PostMapping("/save")
     public Result add(@RequestBody QuestionSaveDTO questionSaveDTO) {
         log.info("新增题目-{}",questionSaveDTO);
         questionService.saveQuestion(questionSaveDTO);

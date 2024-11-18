@@ -13,4 +13,5 @@ public class QuestionDTO {
     private String  description;
     private int  limitTime;
     private int  limitMemory;
+    private String typeList;
 }

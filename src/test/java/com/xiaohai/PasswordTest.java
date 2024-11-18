@@ -119,7 +119,7 @@ public class PasswordTest {
         map.put("4 6","10");
 
         questionSaveDTO.setTypeList("1,2,数组");
-        questionSaveDTO.setTestCase(map);
+//        questionSaveDTO.setTestCase(map);
         questionService.saveQuestion(questionSaveDTO);
     }
 

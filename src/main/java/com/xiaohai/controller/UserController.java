@@ -23,7 +23,7 @@ public class UserController {
     private UserService userService;
 
     //查询用户个人信息接口
-    @GetMapping
+    @GetMapping("/info")
     public Result<UserInfo> info(){
         log.info("正在查询用户个人信息");
         return userService.info();

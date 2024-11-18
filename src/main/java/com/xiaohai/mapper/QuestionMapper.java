@@ -61,4 +61,7 @@ public interface QuestionMapper extends BaseMapper<Question> {
 
     @Select("select number, title from question where number = #{number}")
     Question getNumberAndTitleByNumber(int questionNumber);
+
+    @Select("select * from question where number = #{number}")
+    Question queryQuestion(Integer number);
 }

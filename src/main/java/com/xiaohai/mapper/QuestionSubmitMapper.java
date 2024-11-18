@@ -26,11 +26,16 @@ public interface QuestionSubmitMapper extends BaseMapper<QuestionSubmit> {
     int queryWrongNumberById(Integer id);
     @Select("select count(*) from question_submit where user_id = #{id}")
     int querySubmitNumberById(Integer id);
-    @Select("select question_number from  question_submit where user_id = #{id}")
+    @Select("select distinct(question_number) from  question_submit where user_id = #{id}")
     List<Integer> queryPassQuestions(Integer id);
 
     @Select("select id from question_submit ")
     List<Integer> queryAllIds();
     @Select("select * from question_submit where id = #{number}")
     QuestionSubmit queryById(Integer number);
+
+    @Select("select count(*) from question_submit where question_number = #{number} and result =1")
+    int queryPassNumberByNumber(Integer number);
+    @Select("select count(*) from question_submit where question_number = #{number}")
+    int querySubmitNumberByNumber(Integer number);
 }

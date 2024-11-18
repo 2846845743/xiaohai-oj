@@ -9,11 +9,13 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.xiaohai.mapper.QuestionCaseMapper;
 import com.xiaohai.mapper.QuestionMapper;
+import com.xiaohai.mapper.QuestionSubmitMapper;
 import com.xiaohai.mapper.TypeMapper;
 import com.xiaohai.model.dto.QuestionDTO;
 import com.xiaohai.model.dto.QuestionPageQueryDTO;
 import com.xiaohai.model.dto.QuestionSaveDTO;
 import com.xiaohai.model.po.Question;
+import com.xiaohai.model.po.QuestionCase;
 import com.xiaohai.model.po.Type;
 import com.xiaohai.model.vo.QuestionDetail;
 import com.xiaohai.model.vo.QuestionPageQueryVO;
@@ -99,23 +101,64 @@ public class QuestionServiceImpl implements QuestionService {
             //已经有相同编号题目
             return Result.fail("已有相同题目了！");
         }
-
-        //todo 还没设置UserLocal
+        //1.插入基本信息
         Question questionEntity = BeanUtil.copyProperties(question, Question.class);
-
-        questionEntity.setCreateUser(1);
-        questionEntity.setUpdateUser(1);
+        questionEntity.setDescription(question.getDescription());
+        questionEntity.setCreateUser(UserHolder.getUser().getId());
+        questionEntity.setUpdateUser(UserHolder.getUser().getId());
         questionEntity.setCreateTime(new Date());
         questionEntity.setUpdateTime(new Date());
-
+        List<String> inputList = question.getInputList();
+        List<String> outputList = question.getOutputList();
         questionMapper.insert(questionEntity);
+        //2.插入输入输出信息
+        for(int i=0;i<question.getInputList().size();i++){
+            questionCaseMapper.insert(question.getNumber(),inputList.get(i),outputList.get(i));
+        }
+        //插入标签信息
+        //分割出所有标签
+        String typeList = question.getTypeList();
+        String[] types = typeList.split(",");
+        //查找已有所有标签
+        List<String> dbType = typeMapper.selectAllType();
+        for(String type:types){
+            if(!dbType.contains(type)){
+                Type typeEntity = new Type();
+                typeEntity.setName(type);
+                //db里面不含有这个type则添加
+                typeMapper.insert(typeEntity);
+            }
+        }
+
         return Result.success(null);
     }
+
+    @Autowired
+    private QuestionSubmitMapper questionSubmitMapper;
 
     @Override
     public Result getByNumber(Integer number) {
         //TODO 根据题目number信息，返回题目详情信息，包括题目描述，题目标题，题目number，输入输出样例，时限，内存限制，总提交数，通过数
-        QuestionDetail questionDetail =  questionMapper.getQuestionByNumber(number);
+//        QuestionDetail questionDetail =  questionMapper.getQuestionByNumber(number);
+        QuestionDetail questionDetail = new QuestionDetail();
+        questionDetail.setQuestionNumber(number);
+        //根据题号获取基本信息
+        Question question =  questionMapper.queryQuestion(number);
+        questionDetail.setDescription(question.getDescription());
+        questionDetail.setInputDesc(question.getInputDesc());
+        questionDetail.setOutputDesc(question.getOutputDesc());
+        questionDetail.setTitle(question.getTitle());
+        questionDetail.setLimitMemory(question.getLimitMemory());
+        questionDetail.setLimitTime(question.getLimitTime());
+        //获取提交数量
+        int passCount = questionSubmitMapper.queryPassNumberByNumber(number);
+        int submitNumber = questionSubmitMapper.querySubmitNumberByNumber(number);
+        questionDetail.setPassNumber(passCount);questionDetail.setSubmitNumber(submitNumber);
+        //获取1个输入输出列表
+        List<QuestionCase> questionCases = questionCaseMapper.selectByQuestionNum(number);
+        QuestionCase questionCase = questionCases.get(0);
+        questionDetail.setInputList(questionCase.getInputList());
+        questionDetail.setOutputList(questionCase.getOutputList());
         return  Result.success(questionDetail);
     }
 
@@ -181,11 +224,10 @@ public class QuestionServiceImpl implements QuestionService {
         Question questionEntity = BeanUtil.copyProperties(questionSaveDTO, Question.class);
         questionMapper.insert(questionEntity);
         //2.插入测试用例信息
-        Map<String, String> testCase = questionSaveDTO.getTestCase();
-        for(String inputCase : testCase.keySet()){
-            String outputCase = testCase.get(inputCase);
-            //根据题号插入对应的测试用例
-            questionCaseMapper.insert(number,inputCase,outputCase);
+        List<String> inputList = questionSaveDTO.getInputList();
+        List<String> outputList = questionSaveDTO.getOutputList();
+        for(int i=0;i<questionSaveDTO.getInputList().size();i++){
+            questionCaseMapper.insert(questionSaveDTO.getNumber(),inputList.get(i),outputList.get(i));
         }
 
         //3.插入标签（type）信息，首先查询标签中所有名字，然后进行去重。

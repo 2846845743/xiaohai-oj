@@ -6,8 +6,8 @@ spring:
       max-file-size: 50MB
       max-request-size: 50MB
   redis:
-    host: 192.168.227.100
-    port: 6379
+    host: 117.72.91.159
+    port: 16379
     timeout: 6000ms
     lettuce:
       pool:
