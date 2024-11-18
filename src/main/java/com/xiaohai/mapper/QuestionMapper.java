@@ -58,4 +58,7 @@ public interface QuestionMapper extends BaseMapper<Question> {
             "JOIN type t ON qt.type_id = t.id\n" +
             "WHERE q.number = #{questionNumber};\n")
     List<String> selectTypeNameByQuestionNumber(int questionNumber);
+
+    @Select("select number, title from question where number = #{number}")
+    Question getNumberAndTitleByNumber(int questionNumber);
 }

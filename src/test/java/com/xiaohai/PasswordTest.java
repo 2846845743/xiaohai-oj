@@ -91,13 +91,11 @@ public class PasswordTest {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
-    @Autowired
-    private QuestionSummaryMapper questionSummaryMapper;
+
 
     @Autowired
     private QuestionSubmitMapper questionSubmitMapper;
-    @Autowired
-    private StatusSummaryMapper statusSummaryMapper;
+
 
     @Test
     public void test_redis(){

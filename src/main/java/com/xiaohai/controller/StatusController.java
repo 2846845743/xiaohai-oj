@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 //用户提交记录控制器
-
 @RequestMapping("status")
 @RestController
 public class StatusController {
@@ -23,10 +22,7 @@ public class StatusController {
     @GetMapping("/page")
     public Result<PageResult> page(StatusPageQueryDTO statusPageQueryDTO){
       log.info("statusPageQueryDTO:{}", statusPageQueryDTO);
-      PageResult pageResult =statusPageQueryService.pageQuery2(statusPageQueryDTO);
+      PageResult pageResult =statusPageQueryService.pageQuery(statusPageQueryDTO);
       return Result.success(pageResult);
     }
-
-
-
 }

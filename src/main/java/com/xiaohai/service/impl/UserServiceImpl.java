@@ -5,9 +5,8 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.xiaohai.mapper.QuestionSummaryMapper;
+import com.xiaohai.mapper.QuestionSubmitMapper;
 import com.xiaohai.mapper.UserMapper;
 import com.xiaohai.model.dto.UserDTO;
 import com.xiaohai.model.dto.UserLoginDTO;
@@ -15,7 +14,6 @@ import com.xiaohai.model.dto.UserRedis;
 import com.xiaohai.model.po.User;
 import com.xiaohai.model.vo.UserInfo;
 import com.xiaohai.service.UserService;
-import com.xiaohai.utils.MD5;
 import com.xiaohai.utils.Result;
 import com.xiaohai.utils.UserHolder;
 import lombok.extern.slf4j.Slf4j;
@@ -233,7 +231,7 @@ public class UserServiceImpl implements UserService {
         return Result.success("退出成功！");
     }
     @Autowired
-    private QuestionSummaryMapper questionSummaryMapper;
+    private QuestionSubmitMapper questionSubmitMapper;
 
     @Override
     public Result<UserInfo> info() {
@@ -246,11 +244,11 @@ public class UserServiceImpl implements UserService {
         ui.setEmail(user.getEmail());
         ui.setUsername(user.getUsername());
         //2.根据提交记录表查询用户id为这个的所有记录数
-        ui.setPassNumber(questionSummaryMapper.queryPassNumberById(id));
-        ui.setWrongNumber(questionSummaryMapper.queryWrongNumberById(id));
-        ui.setSubmitNumber(questionSummaryMapper.querySubmitNumberById(id));
+        ui.setPassNumber(questionSubmitMapper.queryPassNumberById(id));
+        ui.setWrongNumber(questionSubmitMapper.queryWrongNumberById(id));
+        ui.setSubmitNumber(questionSubmitMapper.querySubmitNumberById(id));
         //3.获取通过题目题号大全
-        ui.setPassQuestions(questionSummaryMapper.queryPassQuestions(id));
+        ui.setPassQuestions(questionSubmitMapper.queryPassQuestions(id));
         return Result.success(ui);
     }
 }

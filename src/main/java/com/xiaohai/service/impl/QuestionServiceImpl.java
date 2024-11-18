@@ -9,7 +9,6 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.xiaohai.mapper.QuestionCaseMapper;
 import com.xiaohai.mapper.QuestionMapper;
-import com.xiaohai.mapper.QuestionSummaryMapper;
 import com.xiaohai.mapper.TypeMapper;
 import com.xiaohai.model.dto.QuestionDTO;
 import com.xiaohai.model.dto.QuestionPageQueryDTO;
@@ -216,18 +215,19 @@ public class QuestionServiceImpl implements QuestionService {
 @Autowired
 private TypeMapper typeMapper;
 
-    @Autowired
-    private QuestionSummaryMapper questionSummaryMapper;
+
 
 
     public PageResult pageQuery2(QuestionPageQueryDTO questionPQDto) {
 
-        log.info("走新表优化");
-        //根据title模糊查询
-        PageHelper.startPage(questionPQDto.getPage(), questionPQDto.getPageSize());
-        Integer userId = UserHolder.getUser().getId();
-        Page<QuestionPageQueryVO> page = questionSummaryMapper.queryPage(questionPQDto.getTitle(),userId);
+//        log.info("走新表优化");
+//        //根据title模糊查询
+//        PageHelper.startPage(questionPQDto.getPage(), questionPQDto.getPageSize());
+//        Integer userId = UserHolder.getUser().getId();
+////        Page<QuestionPageQueryVO> page = questionSummaryMapper.queryPage(questionPQDto.getTitle(),userId);
+//
+//        return new PageResult(page.getTotal(),page.getResult());
 
-        return new PageResult(page.getTotal(),page.getResult());
+        return null;
     }
 }

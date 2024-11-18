@@ -8,6 +8,7 @@ import com.xiaohai.model.po.QuestionSubmit;
 import com.xiaohai.model.vo.RankVO;
 import com.xiaohai.model.vo.StatusPageQueryVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -18,4 +19,18 @@ public interface QuestionSubmitMapper extends BaseMapper<QuestionSubmit> {
     Page<StatusPageQueryVO> pageQuery(StatusPageQueryDTO statusPageQueryDTO);
     //用户通过数分页查询
     List<RankVO> queryRankPage(int pageSize,int offset);
+
+    @Select("select count(*) from question_submit where user_id = #{id} and result = 1")
+    int queryPassNumberById(Integer id);
+    @Select("select count(*) from question_submit where user_id = #{id} and result = 3")
+    int queryWrongNumberById(Integer id);
+    @Select("select count(*) from question_submit where user_id = #{id}")
+    int querySubmitNumberById(Integer id);
+    @Select("select question_number from  question_submit where user_id = #{id}")
+    List<Integer> queryPassQuestions(Integer id);
+
+    @Select("select id from question_submit ")
+    List<Integer> queryAllIds();
+    @Select("select * from question_submit where id = #{number}")
+    QuestionSubmit queryById(Integer number);
 }

@@ -6,5 +6,7 @@ import com.xiaohai.utils.PageResult;
 public interface StatusPageQueryService {
 
     PageResult pageQuery(StatusPageQueryDTO statusPageQueryDTO);
+
     PageResult pageQuery2(StatusPageQueryDTO statusPageQueryDTO);
+//    PageResult pageQuery2(StatusPageQueryDTO statusPageQueryDTO);
 }
