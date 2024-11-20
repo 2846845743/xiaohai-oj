@@ -156,9 +156,12 @@ public class QuestionServiceImpl implements QuestionService {
         questionDetail.setPassNumber(passCount);questionDetail.setSubmitNumber(submitNumber);
         //获取1个输入输出列表
         List<QuestionCase> questionCases = questionCaseMapper.selectByQuestionNum(number);
-        QuestionCase questionCase = questionCases.get(0);
-        questionDetail.setInputList(questionCase.getInputList());
-        questionDetail.setOutputList(questionCase.getOutputList());
+        if(questionCases!=null && questionCases.size()>0){
+            QuestionCase questionCase = questionCases.get(0);
+            questionDetail.setInputList(questionCase.getInputList());
+            questionDetail.setOutputList(questionCase.getOutputList());
+        }
+
         return  Result.success(questionDetail);
     }
 
