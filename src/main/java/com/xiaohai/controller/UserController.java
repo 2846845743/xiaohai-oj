@@ -1,17 +1,20 @@
 package com.xiaohai.controller;
 
 
+import com.mysql.cj.xdevapi.JsonString;
 import com.xiaohai.model.dto.UserDTO;
 import com.xiaohai.model.dto.UserLoginDTO;
 import com.xiaohai.model.po.User;
 import com.xiaohai.model.vo.UserInfo;
 import com.xiaohai.service.UserService;
 import com.xiaohai.utils.Result;
+import com.xiaohai.utils.UserHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 @CrossOrigin
 @Slf4j
@@ -60,5 +63,12 @@ public class UserController {
     public Result<String> logout(HttpServletRequest request){
 
         return userService.logout(request);
+    }
+
+    @PostMapping("/updateAvatar")
+    public Result<String> updateAvatar( @RequestBody User userDTO){
+        userDTO.setId(UserHolder.getUser().getId());
+        return userService.updateAvatar(userDTO);
+
     }
 }

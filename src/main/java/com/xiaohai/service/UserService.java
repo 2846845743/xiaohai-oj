@@ -19,4 +19,6 @@ public interface UserService extends IService<User> {
     Result<String> logout(HttpServletRequest request);
 
     Result<UserInfo> info();
+
+    Result<String> updateAvatar(User userDTO);
 }

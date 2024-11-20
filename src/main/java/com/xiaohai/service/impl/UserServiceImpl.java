@@ -43,6 +43,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper mapper;
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public boolean saveBatch(Collection<User> entityList, int batchSize) {
@@ -243,12 +245,23 @@ public class UserServiceImpl implements UserService {
         UserInfo ui = new UserInfo();
         ui.setEmail(user.getEmail());
         ui.setUsername(user.getUsername());
+        ui.setAvatarUrl(user.getAvatarUrl());
         //2.根据提交记录表查询用户id为这个的所有记录数
         ui.setPassNumber(questionSubmitMapper.queryPassNumberById(id));
         ui.setWrongNumber(questionSubmitMapper.queryWrongNumberById(id));
         ui.setSubmitNumber(questionSubmitMapper.querySubmitNumberById(id));
         //3.获取通过题目题号大全
         ui.setPassQuestions(questionSubmitMapper.queryPassQuestions(id));
+
         return Result.success(ui);
+    }
+
+    @Override
+    public Result<String> updateAvatar(User userDTO) {
+        User byId = userMapper.getById(userDTO.getId());
+        //TODO这里获取到旧的头像链接，可以通过minio删除这个图片
+        byId.setAvatarUrl(userDTO.getAvatarUrl());
+        userMapper.updateById(byId);
+        return Result.success("更新成功");
     }
 }

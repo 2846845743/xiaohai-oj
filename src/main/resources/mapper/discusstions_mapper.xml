@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xiaohai.mapper.DiscussionMapper">
+
+    <select id="queryPage" resultType="com.xiaohai.model.po.Discussion" parameterType="com.xiaohai.model.dto.DiscussionPageDTO">
+        select id,title,create_user as userId,create_time from
+        discussions
+        where 1=1
+        <if test="questionNumber!=null">
+            and question_number = #{questionNumber}
+        </if>
+    </select>
+
+</mapper>

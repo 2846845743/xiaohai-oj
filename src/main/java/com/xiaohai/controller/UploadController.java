@@ -63,7 +63,8 @@ public class UploadController {
                             .contentType(file.getContentType())
                             .build()
             );
-            return "File uploaded successfully!";
+            //tODO 应该返回图片URL
+            return dbUser.getAvatarUrl();
         } catch (MinioException | IOException | NoSuchAlgorithmException | InvalidKeyException e) {
             e.printStackTrace();
             return "Error uploading file to MinIO: " + e.getMessage();

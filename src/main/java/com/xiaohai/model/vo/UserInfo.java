@@ -13,4 +13,5 @@ public class UserInfo {
     private int submitNumber;
     private int wrongNumber;//解答错误数
     private List<Integer> passQuestions;//通过题目大全
+    private String avatarUrl;
 }
