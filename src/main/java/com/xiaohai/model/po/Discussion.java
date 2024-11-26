@@ -25,4 +25,7 @@ public class Discussion {
 
     @TableField(exist = false)
     private String username;
+
+    @TableField(exist = false)
+    private String questionTitle;
 }

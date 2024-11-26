@@ -190,7 +190,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     //把标签也一起查出来
     public PageResult pageQuery3(QuestionPageQueryDTO questionPQDto) {
-
+        log.info("走内存分开查题目");
 
         //根据title模糊查询
         PageHelper.startPage(questionPQDto.getPage(), questionPQDto.getPageSize());

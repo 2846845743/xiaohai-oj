@@ -1,0 +1,35 @@
+version: '3.8'
+# 命令执行 docker-compose -f docker-compose-app.yml up -d
+services:
+  big-market-app:
+    image: wenhaihang/xiaohai-oj-1.0
+    container_name: xioahai-oj
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      - TZ=PRC
+      - SERVER_PORT=8081
+      - APP_CONFIG_API_VERSION=v1
+      - APP_CONFIG_CROSS_ORIGIN=*
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=123456
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/oj?serverTimezone=UTC&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Shanghai
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.mysql.cj.jdbc.Driver
+      - SPRING_HIKARI_POOL_NAME=Retail_HikariCP
+      - REDIS_SDK_CONFIG_HOST=redis
+      - REDIS_SDK_CONFIG_PORT=6379
+    volumes:
+      - ./log:/data/log
+    networks:
+      - my-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+
+networks:
+  my-network:
+    driver: bridge

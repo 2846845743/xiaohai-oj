@@ -2,10 +2,12 @@ package com.xiaohai.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.xiaohai.mapper.DiscussionMapper;
+import com.xiaohai.mapper.QuestionMapper;
 import com.xiaohai.mapper.UserMapper;
 import com.xiaohai.model.dto.DiscussSaveDTO;
 import com.xiaohai.model.dto.DiscussionPageDTO;
 import com.xiaohai.model.po.Discussion;
+import com.xiaohai.model.po.Question;
 import com.xiaohai.model.po.User;
 import com.xiaohai.service.DiscussionService;
 import com.xiaohai.utils.PageResult;
@@ -65,11 +67,16 @@ public class DiscussionServiceImpl implements DiscussionService {
         return new PageResult(discussionList.size(),discussionList);
     }
 
+    @Autowired
+    private QuestionMapper questionMapper;
+
     @Override
     public Result<Discussion> getById(Long id) {
         Discussion discussion = discussionMapper.selectById(id);
         User byId = userMapper.getById(discussion.getUserId());
         discussion.setUsername(byId.getUsername());
+        Question question = questionMapper.getNumberAndTitleByNumber(discussion.getQuestionNumber());
+        discussion.setQuestionTitle(question.getTitle());
         return Result.success(discussion);
     }
 }
