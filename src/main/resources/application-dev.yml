@@ -26,8 +26,8 @@ mybatis-plus:
   mapper-locations: classpath*:mapper/*.xml
 minio:
   endpoint: http://117.72.91.159:8999
-  access-key: root
-  secret-key: 123456789
+  access-key: minioadmin
+  secret-key: minioadmin
   bucketName: user01
 
 
