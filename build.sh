@@ -1,5 +1,6 @@
 
 # 普通镜像构建，随系统版本构建 amd/arm
+mvn install
 docker build -t wenhaihang/xiaohai-oj-1.0 -f ./Dockerfile .
 
 #启动中间件
