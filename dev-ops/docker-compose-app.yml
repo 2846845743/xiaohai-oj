@@ -6,10 +6,10 @@ services:
     container_name: xioahai-oj
     restart: always
     ports:
-      - "8081:8081"
+      - "8018:8018"
     environment:
       - TZ=PRC
-      - SERVER_PORT=8081
+      - SERVER_PORT=8018
       - APP_CONFIG_API_VERSION=v1
       - APP_CONFIG_CROSS_ORIGIN=*
       - SPRING_DATASOURCE_USERNAME=root
