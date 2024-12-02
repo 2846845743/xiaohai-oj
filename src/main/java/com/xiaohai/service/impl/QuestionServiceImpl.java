@@ -172,7 +172,7 @@ public class QuestionServiceImpl implements QuestionService {
         if(redisPage!=null && questionPQDto.getPage()==1 && (questionPQDto.getTitle()==null || questionPQDto.getTitle().isEmpty())){
             //第一页并且有数据，则返回
             log.info("走redis了");
-            new PageResult(JSON.parseArray(redisPage,QuestionPageQueryVO.class).size(),JSON.parseArray(redisPage,QuestionPageQueryVO.class));
+            return new PageResult(JSON.parseArray(redisPage,QuestionPageQueryVO.class).size(),JSON.parseArray(redisPage,QuestionPageQueryVO.class));
         }
 
         //根据title模糊查询
