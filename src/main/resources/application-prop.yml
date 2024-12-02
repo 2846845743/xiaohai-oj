@@ -54,3 +54,9 @@ redis:
       ping-interval: 60000
       keep-alive: true
 
+minio:
+  endpoint: http://117.72.91.159:8999
+  access-key: minioadmin
+  secret-key: minioadmin
+  bucketName: user01
+
