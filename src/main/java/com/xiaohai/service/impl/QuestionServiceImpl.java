@@ -179,6 +179,15 @@ public class QuestionServiceImpl implements QuestionService {
         PageHelper.startPage(questionPQDto.getPage(), questionPQDto.getPageSize());
         Integer userId = UserHolder.getUser().getId();
         Page<QuestionPageQueryVO> page = questionMapper.queryPage(questionPQDto.getTitle(),userId);
+        List<QuestionPageQueryVO> result = page.getResult();//得到的结果没有标签集
+        //根据题号number查询type类型名字，并拼接
+        for (QuestionPageQueryVO questionPageQueryVO : result) {
+            List<String> typeNames =  questionMapper.selectTypeNameByQuestionNumber(questionPageQueryVO.getQuestionNumber());
+            log.info("查询到的分类：{}",typeNames);
+            questionPageQueryVO.setTypeList(typeNames);
+        }
+
+
         //如果第一页将查询到的结果存入redis
         if(questionPQDto.getPage()==1){
             stringRedisTemplate.opsForValue().set("question-1", JSON.toJSONString(page.getResult()));
