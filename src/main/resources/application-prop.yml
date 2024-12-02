@@ -19,6 +19,7 @@ thread:
 
 # 数据库配置；启动时配置数据库资源信息
 spring:
+
   datasource:
     username: root
     password: 123456
@@ -35,9 +36,6 @@ spring:
     connection-test-query: SELECT 1
   type: com.zaxxer.hikari.HikariDataSource
 
-mybatis:
-  mapper-locations: classpath:/mybatis/mapper/*.xml
-  config-location:  classpath:/mybatis/config/mybatis-config.xml
 
   redis:
     host: 117.72.91.159
@@ -50,6 +48,9 @@ mybatis:
         min-idle: 2
         max-wait: 3000ms
 
+mybatis:
+  mapper-locations: classpath:/mybatis/mapper/*.xml
+  config-location:  classpath:/mybatis/config/mybatis-config.xml
 minio:
   endpoint: http://117.72.91.159:8999
   access-key: minioadmin
