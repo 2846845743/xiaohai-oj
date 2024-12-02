@@ -1,7 +1,7 @@
 version: '3.8'
 # 命令执行 docker-compose -f docker-compose-app.yml up -d
 services:
-  big-market-app:
+  xiaohai-oj-app:
     image: wenhaihang/xiaohai-oj-1.0
     container_name: xioahai-oj
     restart: always
