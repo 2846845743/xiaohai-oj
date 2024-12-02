@@ -54,8 +54,3 @@ redis:
       ping-interval: 60000
       keep-alive: true
 
-# 日志
-logging:
-  level:
-    root: info
-  config: classpath:logback-spring.xml
