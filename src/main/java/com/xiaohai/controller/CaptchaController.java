@@ -72,6 +72,7 @@ public class CaptchaController {
         code = code.toLowerCase();
 
         //生成图片
+        System.setProperty("java.awt.headless", "true");
         String url = generateCaptchaImage(code);
         String uuid = UUID.randomUUID().toString();
         redisTemplate.opsForValue().set(uuid, code, 30, TimeUnit.MINUTES);
