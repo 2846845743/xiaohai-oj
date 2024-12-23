@@ -101,9 +101,10 @@ public class UserServiceImpl implements UserService {
         //1.判断code是否匹配。
         //首先根据uuid查询redis
         String redisCode = stringRedisTemplate.opsForValue().get(userDTO.getUuid());
-        if(redisCode==null || !redisCode.equals(code)){
-            throw new Exception("验证码错误!");
-        }
+        //暂时不再校验验证码
+//        if(redisCode==null || !redisCode.equals(code)){
+//            throw new Exception("验证码错误!");
+//        }
 
 
         if(null == username || null == password || null == email || null == code){
