@@ -1,6 +1,6 @@
 # 构建镜像
 # 基础镜像
-FROM openjdk:8-jre-slim
+FROM openjdk:8-jdk-slim
 
 # 作者
 MAINTAINER wenhaihang
