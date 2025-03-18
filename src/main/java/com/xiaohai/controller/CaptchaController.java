@@ -4,6 +4,8 @@ import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.xiaohai.model.dto.CaptchaDTO;
 import com.xiaohai.model.vo.CaptchaVO;
 import com.xiaohai.utils.Result;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -27,6 +29,7 @@ import java.util.concurrent.TimeUnit;
 //验证码控制器
 @Slf4j
 @RestController
+@Api(tags = "验证码接口", value = "验证码接口")
 public class CaptchaController {
 
 
@@ -63,6 +66,8 @@ public class CaptchaController {
 //
 //    }
 
+
+    @ApiOperation("获取验证码")
     @GetMapping("/captcha")
     public Result<CaptchaVO> getCaptcha() throws IOException {
         log.info("生成验证码--");

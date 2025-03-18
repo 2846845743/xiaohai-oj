@@ -7,6 +7,8 @@ import com.xiaohai.utils.UserHolder;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import io.minio.errors.MinioException;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,6 +27,7 @@ import java.util.UUID;
 
 @Slf4j
 @RestController
+@Api(tags = "上传接口", value = "上传接口")
 public class UploadController {
     @Autowired
     private UserMapper userMapper;
@@ -33,6 +36,7 @@ public class UploadController {
     @Autowired
     private MinioClient minioClient;
 
+    @ApiOperation("上传文件")
     @PostMapping("/upload")
     public String uploadFile(@RequestParam("file") MultipartFile file) {
         Integer userId = UserHolder.getUser().getId();

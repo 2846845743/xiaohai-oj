@@ -7,6 +7,7 @@ import com.xiaohai.model.dto.RankDTO;
 import com.xiaohai.model.vo.RankVO;
 import com.xiaohai.utils.PageResult;
 import com.xiaohai.utils.Result;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,12 +20,14 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/rank")
+@ApiOperation("排行榜接口")
 public class RankController {
 
     @Autowired
     private QuestionSubmitMapper questionSubmitMapper;
 
     //分页查询--手动分页
+    @ApiOperation("分页查询排行榜")
     @GetMapping("/page")
     public Result<PageResult> page(RankDTO rankDTO){
         log.info("---排行榜接口正在执行---,{}",rankDTO);

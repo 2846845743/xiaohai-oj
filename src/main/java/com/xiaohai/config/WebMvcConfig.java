@@ -23,6 +23,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(new LoginInterceptor())
                 // 设置放行请求
                 .excludePathPatterns(
+                        "/**",
                         "/user/login",
                         "/status/page",
                         "/captcha",

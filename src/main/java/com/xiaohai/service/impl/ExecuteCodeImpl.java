@@ -66,7 +66,7 @@ public class ExecuteCodeImpl implements ExecuteCodeService {
             lastExecuteCodeResponse=new ExecuteCodeResponse();
             lastExecuteCodeResponse.setMessage(e.getMessage());
             lastExecuteCodeResponse.setStatus(3);
-            log.info("运行出错或者编译错误");
+            log.error("运行出错或者编译错误",e);
             insertQuestionSubmit(executeCodeDTO,lastExecuteCodeResponse);
             return Result.success(lastExecuteCodeResponse);
         }
