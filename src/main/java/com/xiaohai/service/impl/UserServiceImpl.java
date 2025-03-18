@@ -97,17 +97,17 @@ public class UserServiceImpl implements UserService {
         String username = userDTO.getUsername();
         String password = userDTO.getPassword();
         String email = userDTO.getEmail();
-        String code = userDTO.getCode();
+//        String code = userDTO.getCode();
         //1.判断code是否匹配。
         //首先根据uuid查询redis
-        String redisCode = stringRedisTemplate.opsForValue().get(userDTO.getUuid());
+//        String redisCode = stringRedisTemplate.opsForValue().get(userDTO.getUuid());
         //暂时不再校验验证码
 //        if(redisCode==null || !redisCode.equals(code)){
 //            throw new Exception("验证码错误!");
 //        }
 
 
-        if(null == username || null == password || null == email || null == code){
+        if(null == username || null == password || null == email){
             throw new Exception("系统异常:用户名或密码为空!");
         }
         //查询username是否重复
