@@ -17,6 +17,7 @@ import com.xiaohai.service.UserService;
 import com.xiaohai.utils.Result;
 import com.xiaohai.utils.UserHolder;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -158,7 +159,8 @@ public class UserServiceImpl implements UserService {
     public Result<String> login(UserLoginDTO user) {
 
         //判断账号密码
-        if(user.getPassword()==null || user.getUsername()==null){
+        if(StringUtils
+                .isBlank(user.getPassword())|| user.getUsername()==null){
             return Result.fail("用户密码为空");
         }
         //从数据库中取出盐值和密码对
